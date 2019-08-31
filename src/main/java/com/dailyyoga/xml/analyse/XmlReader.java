@@ -64,13 +64,13 @@ public class XmlReader {
             }
         } catch (Exception e) {
             System.out.println(TAG + "--file:" + file.getAbsolutePath());
-            e.printStackTrace();
+//            e.printStackTrace();
         }
     }
 
     public void println() {
         for (String key : mXmlMap.keySet()) {
-            System.out.println(TAG + "--" + key + ":" + mXmlMap.get(key).getFileSize());
+            System.out.println(TAG + "--" + key + ":" + mXmlMap.get(key).getFileSize() + "--length:" + mXmlMap.get(key).getLength() / 1024F + "kb");
         }
     }
 }

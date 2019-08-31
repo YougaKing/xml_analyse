@@ -40,26 +40,31 @@ public class XmlReader {
         }
     }
 
-    public void analyseFile(File file) throws XmlPullParserException, IOException {
-        if (!file.getName().endsWith(".xml")) return;
-        XmlPullParser parser = mFactory.newPullParser();
-        parser.setInput(new FileInputStream(file), "UTF-8");
+    public void analyseFile(File file) {
+        try {
+            if (!file.getName().endsWith(".xml")) return;
+            XmlPullParser parser = mFactory.newPullParser();
+            parser.setInput(new FileInputStream(file), "UTF-8");
 
-        int eventType = parser.getEventType();
-        while (eventType != XmlPullParser.END_DOCUMENT) {
-            String nodeName = parser.getName();
-            switch (eventType) {
-                case XmlPullParser.START_TAG://开始解析
-                    XmlType xmlType = mXmlMap.get(nodeName);
-                    if (xmlType == null) {
-                        xmlType = new XmlType(nodeName, file.getAbsolutePath());
-                        mXmlMap.put(nodeName, xmlType);
-                    } else {
-                        xmlType.addFileName(file.getAbsolutePath());
-                    }
-                    return;
+            int eventType = parser.getEventType();
+            while (eventType != XmlPullParser.END_DOCUMENT) {
+                String nodeName = parser.getName();
+                switch (eventType) {
+                    case XmlPullParser.START_TAG://开始解析
+                        XmlType xmlType = mXmlMap.get(nodeName);
+                        if (xmlType == null) {
+                            xmlType = new XmlType(nodeName, file.getAbsolutePath());
+                            mXmlMap.put(nodeName, xmlType);
+                        } else {
+                            xmlType.addFileName(file.getAbsolutePath());
+                        }
+                        return;
+                }
+                eventType = parser.next();
             }
-            eventType = parser.next();
+        } catch (Exception e) {
+            System.out.println(TAG + "--file:" + file.getAbsolutePath());
+            e.printStackTrace();
         }
     }
 
